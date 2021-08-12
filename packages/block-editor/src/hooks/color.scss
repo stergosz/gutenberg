@@ -1,0 +1,29 @@
+.color-block-support-panel {
+	.components-base-control__label {
+		display: flex;
+		align-items: center;
+	}
+
+	.components-circular-option-picker__swatches {
+		display: grid;
+		grid-template-columns: repeat(6, 28px);
+		margin-right: 0;
+		margin-bottom: $grid-unit-10;
+		row-gap: $grid-unit-15;
+		justify-content: space-between;
+	}
+
+	.components-circular-option-picker__option-wrapper,
+	.components-angle-picker-control {
+		margin: 0;
+	}
+
+	.components-notice__content,
+	.components-circular-option-picker__dropdown-link-action {
+		margin-right: 0;
+	}
+
+	.block-editor-contrast-checker {
+		grid-column: span 2;
+	}
+}

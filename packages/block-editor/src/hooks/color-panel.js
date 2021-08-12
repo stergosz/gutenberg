@@ -2,14 +2,15 @@
  * WordPress dependencies
  */
 import { useState, useEffect } from '@wordpress/element';
-import { __ } from '@wordpress/i18n';
+import { __experimentalToolsPanelItem as ToolsPanelItem } from '@wordpress/components';
 
 /**
  * Internal dependencies
  */
-import PanelColorGradientSettings from '../components/colors-gradients/panel-color-gradient-settings';
 import ContrastChecker from '../components/contrast-checker';
+import ColorGradientControl from '../components/colors-gradients/control';
 import InspectorControls from '../components/inspector-controls';
+import useSetting from '../components/use-setting';
 import { __unstableUseBlockRef as useBlockRef } from '../components/block-list/use-block-props/use-block-refs';
 
 function getComputedStyle( node ) {
@@ -20,11 +21,15 @@ export default function ColorPanel( {
 	settings,
 	clientId,
 	enableContrastChecking = true,
-	showTitle = true,
 } ) {
 	const [ detectedBackgroundColor, setDetectedBackgroundColor ] = useState();
 	const [ detectedColor, setDetectedColor ] = useState();
 	const ref = useBlockRef( clientId );
+
+	const colors = useSetting( 'color.palette' );
+	const gradients = useSetting( 'color.gradients' );
+	const disableCustomColors = ! useSetting( 'color.custom' );
+	const disableCustomGradients = ! useSetting( 'color.customGradient' );
 
 	useEffect( () => {
 		if ( ! enableContrastChecking ) {
@@ -54,22 +59,41 @@ export default function ColorPanel( {
 	} );
 
 	return (
-		<InspectorControls>
-			<PanelColorGradientSettings
-				title={ __( 'Color' ) }
-				initialOpen={ false }
-				settings={ settings }
-				showTitle={ showTitle }
-				__experimentalHasMultipleOrigins
-				__experimentalIsRenderedInSidebar
-			>
-				{ enableContrastChecking && (
-					<ContrastChecker
-						backgroundColor={ detectedBackgroundColor }
-						textColor={ detectedColor }
+		<InspectorControls __experimentalGroup="color">
+			{ settings.map( ( setting, index ) => (
+				<ToolsPanelItem
+					key={ index }
+					hasValue={ setting.hasValue }
+					label={ setting.label }
+					onDeselect={ setting.onDeselect }
+					isShownByDefault={ setting.isShownByDefault }
+					resetAllFilter={ setting.resetAllFilter }
+					panelId={ clientId }
+				>
+					<ColorGradientControl
+						{ ...{
+							colors,
+							gradients,
+							disableCustomColors,
+							disableCustomGradients,
+							clearable: false,
+							label: setting.label,
+							onColorChange: setting.onColorChange,
+							onGradientChange: setting.onGradientChange,
+							colorValue: setting.colorValue,
+							gradientValue: setting.gradientValue,
+						} }
+						__experimentalHasMultipleOrigins
+						__experimentalIsRenderedInSidebar
 					/>
-				) }
-			</PanelColorGradientSettings>
+				</ToolsPanelItem>
+			) ) }
+			{ enableContrastChecking && (
+				<ContrastChecker
+					backgroundColor={ detectedBackgroundColor }
+					textColor={ detectedColor }
+				/>
+			) }
 		</InspectorControls>
 	);
 }

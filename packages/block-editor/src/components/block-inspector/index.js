@@ -128,6 +128,10 @@ const BlockInspectorSingleBlock = ( {
 			) }
 			<InspectorControls.Slot />
 			<InspectorControls.Slot
+				__experimentalGroup="color"
+				label={ __( 'Color' ) }
+			/>
+			<InspectorControls.Slot
 				__experimentalGroup="typography"
 				label={ __( 'Typography' ) }
 			/>
