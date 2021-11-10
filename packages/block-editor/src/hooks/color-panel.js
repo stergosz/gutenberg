@@ -10,7 +10,7 @@ import { __experimentalToolsPanelItem as ToolsPanelItem } from '@wordpress/compo
 import ContrastChecker from '../components/contrast-checker';
 import ColorGradientControl from '../components/colors-gradients/control';
 import InspectorControls from '../components/inspector-controls';
-import useSetting from '../components/use-setting';
+import useMultipleOriginColorsAndGradients from '../components/colors-gradients/use-multiple-origin-colors-and-gradients';
 import { __unstableUseBlockRef as useBlockRef } from '../components/block-list/use-block-props/use-block-refs';
 
 function getComputedStyle( node ) {
@@ -25,11 +25,7 @@ export default function ColorPanel( {
 	const [ detectedBackgroundColor, setDetectedBackgroundColor ] = useState();
 	const [ detectedColor, setDetectedColor ] = useState();
 	const ref = useBlockRef( clientId );
-
-	const colors = useSetting( 'color.palette' );
-	const gradients = useSetting( 'color.gradients' );
-	const disableCustomColors = ! useSetting( 'color.custom' );
-	const disableCustomGradients = ! useSetting( 'color.customGradient' );
+	const colorGradientSettings = useMultipleOriginColorsAndGradients();
 
 	useEffect( () => {
 		if ( ! enableContrastChecking ) {
@@ -72,10 +68,7 @@ export default function ColorPanel( {
 				>
 					<ColorGradientControl
 						{ ...{
-							colors,
-							gradients,
-							disableCustomColors,
-							disableCustomGradients,
+							...colorGradientSettings,
 							clearable: false,
 							label: setting.label,
 							onColorChange: setting.onColorChange,
