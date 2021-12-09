@@ -67,6 +67,10 @@ const BlockInspector = ( { showNoBlockSelectedMessage = true } ) => {
 			<div className="block-editor-block-inspector">
 				<MultiSelectionInspector />
 				<InspectorControls.Slot />
+				<InspectorControls.Slot
+					__experimentalGroup="color"
+					label={ __( 'Color' ) }
+				/>
 			</div>
 		);
 	}
