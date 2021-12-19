@@ -35,7 +35,7 @@ const Example = () => {
 				url={ url }
 				dimensions={ dimensions }
 				value={ focalPoint }
-				onChange={ ( focalPoint ) => setFocalPoint( { focalPoint } ) }
+				onChange={ ( focalPoint ) => setFocalPoint( focalPoint ) }
 			/>
 			<div style={ style } />
 		</>
